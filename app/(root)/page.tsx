@@ -1,15 +1,25 @@
 import { RightSideBar } from "@/components/RightSideBar";
 import { HeaderBox } from "../../components/HeaderBox"
 import { TotalBalanceBox } from "../../components/TotalBalanceBox"
+import { getServerSession } from "next-auth";
+import { NEXT_AUTH } from "@/lib/auth";
 
 
-const Home = () => {
+async function Home()  {
 
-    const loggedIn = {
-        firstName : 'Srinjoy' ,
-        lastName : "Das",
-        email : "dassrinjoy333@gmail.com"
+    const session = await getServerSession(NEXT_AUTH);
+    console.log(JSON.stringify(session));
+
+    const loggedIn = session?.user?  {
+        firstName :session.user.firstName || 'Guest' ,
+        lastName : session.user.lastName || '',
+        email : session.user.email || ''
+    } : {
+        firstName : 'Guest',
+        lastName : '',
+        emal : ''
     };
+
     const CurrentBalance = {
         Balance : 1250
     }
@@ -20,7 +30,7 @@ const Home = () => {
                 <header className="home-header">
                     <HeaderBox  type="greeting"
                         title = "Welcome"
-                        user={loggedIn?.firstName || 'Guest'}
+                        user={loggedIn.firstName || 'Guest'}
                         subtext="Access and manage your account"
                     />
                     <TotalBalanceBox 

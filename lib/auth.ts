@@ -56,9 +56,20 @@ export const NEXT_AUTH: NextAuthOptions = {
     secret: process.env.JWT_SECRET || "secret",
     callbacks: {
         async session({ token, session }: any) {
-            session.user.id = token.sub
+            if(session.user){
+                const user  = await prisma.user.findUnique({
+                    where : {
+                        email : session.user.email
+                    }
+                });
 
-            return session;  //returning the session of the user
+                if(user){
+                    session.user.firstName = user.firstName;
+                    session.user.lastName = user.lastName;
+                    session.user.id = token.sub;
+                }
+            }
+            return session; //returning the session of the user
         }
     }
 };
