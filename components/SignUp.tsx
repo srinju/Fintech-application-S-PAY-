@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Signup() {
@@ -16,9 +16,9 @@ export default function Signup() {
     dateOfBirth: '',
     ssn: '',
   });
-
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+   
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -54,6 +54,8 @@ export default function Signup() {
         setError('An error occurred during signup');
     }
   };
+
+  
 
   return (
     <div className="max-w-md mx-auto mt-10 p-5 border rounded-lg shadow-lg">

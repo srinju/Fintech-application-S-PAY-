@@ -58,7 +58,7 @@ export const NEXT_AUTH: NextAuthOptions = {
         async session({ token, session }: any) {
             session.user.id = token.sub
 
-            return session;
+            return session;  //returning the session of the user
         }
     }
 };
