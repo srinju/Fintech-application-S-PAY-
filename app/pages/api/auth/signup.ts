@@ -13,7 +13,7 @@ const signupSchema = z.object({
     password : z.string().min(6,"password must be atleast 6 charecters").nonempty("password is requried"),
     firstName : z.string().nonempty("First name is required"), 
     lastName : z.string().nonempty("Last name is required"),
-    adress1 :  z.string().nonempty("Address is required"),
+    address1 :  z.string().nonempty("Address is required"),
     city : z.string().nonempty("City is required"),
     postalCode : z.string().nonempty("Postal code is required") ,
     dateOfBirth :  z.string().nonempty("Date of birth is required"),
@@ -21,12 +21,13 @@ const signupSchema = z.object({
 });
 
 export default async function handler(req : NextApiRequest,res : NextApiResponse) {
-    if(req.method === 'POST') {
+    if(req.method !== 'POST') {
         return res.status(405).json({
             error: "method not allowed , some bakchodi happened!"
         });
     }
     try {
+        console.log('request body : ' , req.body); //for debugging
         const validatedData = signupSchema.parse(req.body);
         const existingUser = await prisma.user.findFirst({
             where : {
@@ -46,7 +47,7 @@ export default async function handler(req : NextApiRequest,res : NextApiResponse
                 password : validatedData.password,
                 firstName : validatedData.firstName,
                 lastName : validatedData.lastName,
-                address1 : validatedData.adress1,
+                address1 : validatedData.address1,
                 city : validatedData.city,
                 postalCode : validatedData.postalCode,
                 dateOfBirth : validatedData.dateOfBirth,
@@ -58,9 +59,15 @@ export default async function handler(req : NextApiRequest,res : NextApiResponse
             user : newUser
         })
     } catch(e) {
-        console.error("some error occured!" , e);
-        res.status(500).json({
-            error : "internal server error"
+        console.error("Validation or other error occurred:", e);
+        // If the error is related to zod validation, handle it specifically
+        if (e instanceof z.ZodError) {
+            return res.status(400).json({
+                error: e.errors, // Provide specific validation errors
+            });
+        }
+        return res.status(500).json({
+            error: "Internal server error", // General error for unexpected issues
         });
     }
 }

@@ -41,15 +41,17 @@ export default function Signup() {
         body: JSON.stringify(formData),
       });
 
-      if (res.ok) {
-        setSuccess('User registered successfully!');
-        router.push('/signin'); // Redirect to signin page after successful registration
-      } else {
-        const { error } = await res.json();
-        setError(error || 'Something went wrong');
-      }
+      if (!res.ok) {
+            const errorResponse = await res.text(); // Use text() instead of json() for non-JSON responses
+            throw new Error(errorResponse || 'An unknown error occurred');
+       }
+        const data = await res.json();
+        console.log('User created:', data);
+        // Handle successful signup (e.g., redirect or show a success message)
     } catch (error) {
-      setError('An error occurred');
+        const errorMsg = error instanceof Error ? error.message : 'An unknown error occurred'; //for debugginh
+        console.error('Error occurred during signup:', errorMsg); //for debugging
+        setError('An error occurred during signup');
     }
   };
 
@@ -103,7 +105,7 @@ export default function Signup() {
             <label className="block">city</label>
             <input
               type="text"
-              name="state"
+              name="city"
               value={formData.city}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 text-slate-950 rounded"
