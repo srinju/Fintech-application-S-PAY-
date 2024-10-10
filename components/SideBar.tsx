@@ -5,6 +5,8 @@ import Link from "next/link"
 import Image  from "next/image"
 import { twMerge } from "tailwind-merge";
 import { usePathname } from "next/navigation";
+import { LogOutButton } from "./LogOutButton";
+import { Footer } from "./Footer";
 
 export const sidebarLinks = [
     {
@@ -80,8 +82,10 @@ export const SideBar = ({user} : SiderbarProps) => {
                     )
                 })}
                 User information
+                
             </nav>
-            footer
+            
+            <Footer user={user} type="desktop" />
         </div>
     )
 }

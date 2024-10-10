@@ -1,17 +1,28 @@
 import Image from "next/image";
 import { SideBar } from "../../components/SideBar";
 import { MobileNav } from "@/components/MobileNav";
+import { getServerSession } from "next-auth";
+import { NEXT_AUTH } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
 
-  const loggedIn = {
-    firstName : "Srinjoy",
-    lastanme : "Das"
+  const session = await getServerSession(NEXT_AUTH);
+
+  if(!session){
+    redirect('/api/auth/signin'); //as it is a server comp we cant use router.push so we use redirect from nextnavigation here
   }
+
+  const loggedIn = {
+    firstName : session?.user.firstName || "Guest",
+    lastanme : session?.user.lastName || ""
+  }
+
+  
 
 //when the user uses mobile devices it not shows the sidebar instead it shows the navbar
 
