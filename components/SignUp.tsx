@@ -33,7 +33,7 @@ export default function Signup() {
     setSuccess('');
 
     try {
-      const res = await fetch('/api/auth/signup', {
+      const res = await fetch('/api/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export default function Signup() {
        }
         const data = await res.json();
         console.log('User created:', data);
-        // Handle successful signup (e.g., redirect or show a success message)
+        router.push('/api/auth/signin');
     } catch (error) {
         const errorMsg = error instanceof Error ? error.message : 'An unknown error occurred'; //for debugginh
         console.error('Error occurred during signup:', errorMsg); //for debugging

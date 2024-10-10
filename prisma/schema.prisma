@@ -7,20 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Account {
-  id               String @id @default(uuid())
-  userId           String
-  availableBalance Float  @default(0.0)
-  currentBalance   Float  @default(0.0)
-  officialName     String
-  mask             String
-  institutionId    String
-  name             String
-  type             String
-  subtype          String
-  sharableId       String
-  User             User   @relation(fields: [userId], references: [id])
-}
+
 
 model User {
   id                String    @id @default(uuid())
@@ -35,5 +22,4 @@ model User {
   dateOfBirth       String
   ssn               String
   password          String
-  Account           Account[]
 }
