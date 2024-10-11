@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcrypt";
+import { createDwollaCustomer } from "@/lib/actions/dwolla.actions";
+import { extractCustomerIdFromUrl } from "@/lib/utils";
 
 const prisma = new PrismaClient();
 
@@ -58,10 +60,37 @@ export async function POST(req: Request) {
       },
     });
 
+    if(!newUser){
+        throw new Error("error occured while creating new user!");
+    }
+
+    //creating dwolla customer url and linking it with the new user
+    const dwollaCustomerUrl = await createDwollaCustomer({
+        ...validatedData,
+        type : 'personal'
+    });
+
+    if(!dwollaCustomerUrl) {
+        throw new Error("error occured while creating dwolla customer url");
+    }
+
+    const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
+
+   //update the new user with dwolla customer detials in the database>
+   const updatedUser = await prisma.user.update({
+    where : {
+        id : newUser.id
+    },
+    data : {
+        dwollaCustomerId : dwollaCustomerId,
+        dwollaCustomerUrl : dwollaCustomerUrl
+    }
+   })
+
     return NextResponse.json(
       {
-        user: newUser,
-        message: "User created successfully!",
+        user: updatedUser,
+        message: "User created and dwolla customer linked  successfully!",
       },
       {
         status: 201,

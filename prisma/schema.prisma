@@ -22,4 +22,18 @@ model User {
   dateOfBirth       String
   ssn               String
   password          String
+  bankAccounts      BankAccount[]
+}
+
+model BankAccount {
+  id String @id @default(uuid())
+  userId String @unique
+  bankId String
+  accountId String
+  accessToken String
+  fundingSourceUrl String
+  shareableId String
+  user User @relation(fields: [userId] , references: [id])
+
+  @@index([userId])
 }
