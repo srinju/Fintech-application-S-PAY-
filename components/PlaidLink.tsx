@@ -1,6 +1,6 @@
-
-import { createLinkToken } from '@/lib/actions/user.actions';
-import { useRouter } from 'next/router';
+"use client"
+import { createLinkToken, exchangePublicToken } from '@/lib/actions/user.actions';
+import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import {PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink} from 'react-plaid-link'
 
@@ -19,11 +19,11 @@ const PlaidLink = ({user,variant} : PlaidLinkProps) => {
 
     //3rd wala step when the linktoken is get then public token is generated and it is send to the server and the server will send it to the client
     const onSuccess = useCallback<PlaidLinkOnSuccess>(async(public_token : string) => {
-        //await exchangePublicToken({
-        //    publicToken : public_token,
-        //    user
-        //})
-        //router.push('/');
+        await exchangePublicToken({
+            publicToken : public_token,
+            user
+        })
+        router.push('/');
     },[user]) //when the user changes then the use callback is triggered
 
     const config : PlaidLinkOptions = {

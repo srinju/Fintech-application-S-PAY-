@@ -131,6 +131,7 @@ declare type SearchParamProps = {
     type: string;
     address1: string;
     city: string;
+    state : string
     postalCode: string;
     dateOfBirth: string;
     ssn: string;

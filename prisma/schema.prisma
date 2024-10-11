@@ -17,6 +17,7 @@ model User {
   firstName         String
   lastName          String
   address1          String
+  state             String
   city              String
   postalCode        String
   dateOfBirth       String

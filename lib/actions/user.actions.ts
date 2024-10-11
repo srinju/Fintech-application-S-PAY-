@@ -16,7 +16,7 @@ export const createLinkToken = async (user : User) => { //this is the thing wher
             user : {
                 client_user_id : user.$id
             },
-            client_name : user.firstName,
+            client_name : `${user.firstName} ${user.lastName}`,
             products : ['auth'] as Products[],
             language : 'en',
             country_codes : ['US'] as CountryCode[],
