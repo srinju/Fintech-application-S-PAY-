@@ -11,10 +11,16 @@ import { PrismaClient } from "@prisma/client";
 const primsa = new PrismaClient();
 
 export const createLinkToken = async (user : User) => { //this is the thing where our server sends the user related information to the plaid server to get the linktoken
+    console.log('user data for debugging! ' , user);
     try {
+        if(!user || !user.id || !user.firstName || !user.lastName) {
+            throw new Error("user info is  missing or incorrect!");
+        }
+        console.log("creatting link token for user . ", user.id);
+
         const tokenParams = {
             user : {
-                client_user_id : user.$id
+                client_user_id : user.id
             },
             client_name : `${user.firstName} ${user.lastName}`,
             products : ['auth'] as Products[],
@@ -22,6 +28,16 @@ export const createLinkToken = async (user : User) => { //this is the thing wher
             country_codes : ['US'] as CountryCode[],
         }
         const response = await plaidClient.linkTokenCreate(tokenParams); //in the response we are getting the link that will be created from plaid which plaid creates based on the user related information
+
+        //logging the response from plaid to ensure it is structured correctly>
+        console.log("plaid link token response ", response.data);   // debugging step
+        
+        //checking if the link token exists in the response> (debugging step)
+        if(!response.data.link_token) {
+            throw new Error("link token not present in the response data/Link token not received from plaid");
+        }
+
+        //if present then returning the link token
         return parseStringify({
             linkToken : response.data.link_token
         })
@@ -112,7 +128,7 @@ export const exchangePublicToken = async ({
         //and sharable ID(this id is for users to transfer money between accounts)
 
         await createBankAccount({ //server action to create bank account
-            userId : user.$id,
+            userId : user.id,
             bankId : itemId,
             accountId : accountData.account_id,
             accessToken,
@@ -129,5 +145,31 @@ export const exchangePublicToken = async ({
 
     } catch (error) {
         console.error("an error occured while exchanging the public token as access token" , error);
+    }
+}
+
+//get banks>>
+
+export const  getBanks = async ({userId} : getBanksProps) => {
+    //take userId
+    //list all the banks that the user has with that userId
+
+    try {
+        const banks = await primsa.bankAccount.findMany({
+            where : {
+                userId : userId,
+            },
+            select : {
+                bankId : true,
+                accountId : true,
+                accessToken : true,
+                fundingSourceUrl : true,
+                shareableId : true
+            }
+        });
+        return banks;
+    } catch (error) {
+        console.log("error retreiving bank accounts!" , error);
+        return null;
     }
 }

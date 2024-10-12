@@ -26,7 +26,7 @@ declare type SearchParamProps = {
   };
   
   declare type User = {
-    $id: string;
+    id: string;
     email: string;
     userId: string;
     dwollaCustomerUrl: string;
@@ -65,7 +65,7 @@ declare type SearchParamProps = {
   
   declare type Transaction = {
     id: string;
-    $id: string;
+    id: string;
     name: string;
     paymentChannel: string;
     type: string;
@@ -83,7 +83,7 @@ declare type SearchParamProps = {
   };
   
   declare type Bank = {
-    $id: string;
+    id: string;
     accountId: string;
     bankId: string;
     accessToken: string;
