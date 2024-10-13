@@ -148,8 +148,7 @@ export const exchangePublicToken = async ({
     }
 }
 
-//get banks>>
-
+//get banks for a specific user
 export const  getBanks = async ({userId} : getBanksProps) => {
     //take userId
     //list all the banks that the user has with that userId
@@ -158,18 +157,31 @@ export const  getBanks = async ({userId} : getBanksProps) => {
         const banks = await primsa.bankAccount.findMany({
             where : {
                 userId : userId,
-            },
-            select : {
-                bankId : true,
-                accountId : true,
-                accessToken : true,
-                fundingSourceUrl : true,
-                shareableId : true
             }
         });
         return banks;
     } catch (error) {
         console.log("error retreiving bank accounts!" , error);
         return null;
+    }
+}
+
+//get specific bank from bankcollection with the bankID>
+export const getBank = async ({ // function to get additional bank details
+    bankId,userId 
+} : {bankId : string , userId : string}) => {
+    
+    try {
+        console.log("document id from the useractions file " , bankId)
+        const bank = await primsa.bankAccount.findUnique({
+            where : {
+                userId : userId,
+                accountId : bankId
+            }
+        });
+        console.log("bank from the user actions file that is fetching from the database" , bank);
+        return bank;
+    } catch (error) {
+        console.log("error fetching bank account!!" , error);
     }
 }

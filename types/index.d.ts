@@ -59,12 +59,11 @@ declare type SearchParamProps = {
     name: string;
     type: string;
     subtype: string;
-    appwriteItemId: string;
+    bankId: string;
     shareableId: string;
   };
   
   declare type Transaction = {
-    id: string;
     id: string;
     name: string;
     paymentChannel: string;
@@ -145,7 +144,7 @@ declare type SearchParamProps = {
   
   declare interface BankInfoProps {
     account: Account;
-    appwriteItemId?: string;
+    bankId?: string;
     type: "full" | "card";
   }
   
@@ -200,7 +199,7 @@ declare type SearchParamProps = {
   
   declare interface BankTabItemProps {
     account: Account;
-    appwriteItemId?: string;
+    bankId?: string;
   }
   
   declare interface TotalBalanceBoxProps {
@@ -227,7 +226,7 @@ declare type SearchParamProps = {
   declare interface RecentTransactionsProps {
     accounts: Account[];
     transactions: Transaction[];
-    appwriteItemId: string;
+    bankId  : string;
     page: number;
   }
   
@@ -262,7 +261,7 @@ declare type SearchParamProps = {
   }
   
   declare interface getAccountProps {
-    appwriteItemId: string;
+    bankId: string;
   }
   
   declare interface getInstitutionProps {
@@ -322,7 +321,8 @@ declare type SearchParamProps = {
   }
   
   declare interface getBankProps {
-    documentId: string;
+    //documentId: string;
+    bankId : string
   }
   
   declare interface getBankByAccountIdProps {

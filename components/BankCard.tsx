@@ -22,7 +22,7 @@ export const BankCard = ({account,userName,showBalance}: CreditCardProps) => {
                     <div className="flex justify-between">
                         <div className="">
                             <p className="font-light">
-                                Name
+                                {userName}
                             </p>
                             <p className="font-medium tracking-widest">
                                 {account.name || userName}
@@ -45,15 +45,15 @@ export const BankCard = ({account,userName,showBalance}: CreditCardProps) => {
                                     Valid
                                 </p>
                                 <p className="font-medium tracking-wider text-sm">
-                                    11/15 {/*add dynamic valid date here*/}
+                                    11/15 
                                 </p>
                             </div>
                             <div className="">
-                                <p className="font-light text-xs text-xs">
+                                <p className="font-light text-xs">
                                     Expiry
                                 </p>
                                 <p className="font-medium tracking-wider text-sm">
-                                    03/25 {/* add dynamic expiry date here*/}
+                                    03/25 
                                 </p>
                             </div>
 

@@ -28,13 +28,14 @@ model User {
 
 model BankAccount {
   id String @id @default(uuid())
-  userId String @unique
+  userId String 
   bankId String
-  accountId String
+  accountId String @unique
   accessToken String
   fundingSourceUrl String
   shareableId String
   user User @relation(fields: [userId] , references: [id])
 
+  @@unique([userId, accountId])
   @@index([userId])
 }

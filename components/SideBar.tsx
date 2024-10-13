@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import { usePathname } from "next/navigation";
 import { LogOutButton } from "./LogOutButton";
 import { Footer } from "./Footer";
+import { PlaidLink } from "react-plaid-link";
 
 export const sidebarLinks = [
     {
@@ -81,7 +82,7 @@ export const SideBar = ({user} : SiderbarProps) => {
                         </Link>
                     )
                 })}
-                User information
+                <PlaidLink user={user} />
                 
             </nav>
             

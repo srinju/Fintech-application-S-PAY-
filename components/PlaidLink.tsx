@@ -3,6 +3,8 @@ import { createLinkToken, exchangePublicToken } from '@/lib/actions/user.actions
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import {PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink} from 'react-plaid-link'
+import { Button } from './ui/button';
+import Image from 'next/image';
 
 const PlaidLink = ({user,variant} : PlaidLinkProps) => {
     const router = useRouter();
@@ -36,20 +38,42 @@ const PlaidLink = ({user,variant} : PlaidLinkProps) => {
   return (
     <>
         {variant === 'primary' ? (
-            <button onClick={() => open()}
+            <Button onClick={() => open()}
              disabled={!ready} //means when user is not signed up or there is no session genereated then it will show disabled 
              type='button'
              className='plaidlink-primary'>
                 Connect Bank
-            </button>
+            </Button>
         ) : variant === 'ghost' ? (
-            <button type='button'>
-                Connect Bank
-            </button>
+            <Button onClick={() => {
+                open()
+            }} className='plaidlink-ghost'
+                variant="ghost"
+                type='button'>
+                    <Image
+                        src="	https://www.svgrepo.com/show/93921/satellite.svg"
+                        alt="connect bank"
+                        width={24}
+                        height={24}
+                    />
+                    <p className=' hidden text-[16px] font-semibold text-black-2 xl:block'>
+                        Connect Bank
+                    </p>
+            </Button>
         ) : (
-            <button>
-                Connect Bank
-            </button>
+            <Button onClick={() => {
+                open()
+            }} className='plaidlink-default'>
+                <Image
+                    src="	https://www.svgrepo.com/show/93921/satellite.svg"
+                    alt="connect bank"
+                    width={24}
+                    height={24}
+                />
+                <p className='text-[16px] font-semibold text-black-2'>
+                    Connect Bank
+                </p>
+            </Button>
         )}
     
     </>

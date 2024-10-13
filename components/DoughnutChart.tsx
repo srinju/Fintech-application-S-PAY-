@@ -10,17 +10,27 @@ declare interface DoughnutChartProps {
     accounts: Account[];
 }
 
-export const DoughnutChart = ({ accounts }: DoughnutChartProps) => {
+export const DoughnutChart =  ({ accounts }: DoughnutChartProps) => {
+
+    const flatAccounts = accounts.flat(); //  by mistake accounts is made one array deep so flat removes the one array deep thing
+
+
+    console.log("accounts before passing the to doughnut chart ", flatAccounts);
+    const accountNames = flatAccounts.map((a) => a.name);
+    const balances = flatAccounts.map((a) => a.currentBalance);
+    console.log("accountNames from doughnut chart filr ", accountNames);
+    console.log("balances from doughnut chart filr ", balances);
+
     // dataset for the chart data>
     const data = {
         datasets: [
             {
-                label: "Banks",
-                data: [1250, 2500, 3750],
+                label: 'Banks',
+                data: balances,
                 backgroundColor: ["#7CFC00", "#50C878", "#008000"],
             },
         ],
-        labels: ["Bank1", "Bank2", "Bank3"],
+        labels: accountNames,
     };
 
     return <Doughnut 
