@@ -7,6 +7,8 @@ import { Button } from './ui/button';
 import Image from 'next/image';
 
 const PlaidLink = ({user,variant} : PlaidLinkProps) => {
+    
+    console.log("user data before calling the getlinktoken function  ",user);
     const router = useRouter();
     const [token , setToken] = useState('');
 

@@ -19,7 +19,9 @@ export default async function RootLayout({
 
   const loggedIn = {
     firstName : session?.user.firstName || "Guest",
-    lastanme : session?.user.lastName || ""
+    lastName : session?.user.lastName || "",
+    id : session?.user.id,
+    email : session?.user.email    
   }
 
   

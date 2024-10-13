@@ -82,7 +82,7 @@ export const SideBar = ({user} : SiderbarProps) => {
                         </Link>
                     )
                 })}
-                <PlaidLink user={user} />
+                {pathname === '/my-banks' || pathname === '/'} && <PlaidLink user={user} />
                 
             </nav>
             

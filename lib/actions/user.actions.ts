@@ -11,9 +11,13 @@ import { PrismaClient } from "@prisma/client";
 const primsa = new PrismaClient();
 
 export const createLinkToken = async (user : User) => { //this is the thing where our server sends the user related information to the plaid server to get the linktoken
-    console.log('user data for debugging! ' , user);
+    console.log('user id data for debugging! ' , user);
     try {
-        if(!user || !user.id || !user.firstName || !user.lastName) {
+        const { id : userId , firstName , lastName : lastname} = user;
+        console.log("user id before the if !userId check " , user.userId);
+
+        if(!userId || !firstName || !lastname) {
+            console.log("Missing fields ", {id : userId , firstName , lastname});
             throw new Error("user info is  missing or incorrect!");
         }
         console.log("creatting link token for user . ", user.id);
