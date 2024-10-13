@@ -65,7 +65,7 @@ const PlaidLink = ({user,variant} : PlaidLinkProps) => {
                 open()
             }} className='plaidlink-default'>
                 <Image
-                    src="	https://www.svgrepo.com/show/93921/satellite.svg"
+                    src="https://www.svgrepo.com/show/93921/satellite.svg"
                     alt="connect bank"
                     width={24}
                     height={24}

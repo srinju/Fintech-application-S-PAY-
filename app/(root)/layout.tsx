@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { SideBar } from "../../components/SideBar";
+import  SideBar  from "../../components/SideBar";
 import { MobileNav } from "@/components/MobileNav";
 import { getServerSession } from "next-auth";
 import { NEXT_AUTH } from "@/lib/auth";
