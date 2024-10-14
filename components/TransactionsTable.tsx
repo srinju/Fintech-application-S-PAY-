@@ -76,7 +76,7 @@ import {
     )
   } 
   
-  const TransactionsTable = ({ transactions }: TransactionTableProps) => {
+  const TransactionsTable = ({ transactions = [] }: TransactionTableProps) => {
     return (
       <Table>
         <TableHeader className="bg-[#f9fafb]">
@@ -90,13 +90,14 @@ import {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.map((t: Transaction) => {
-            const status = getTransactionStatus(new Date(t.date))
-            const amount = formatAmount(t.amount)
-  
+        {transactions.length > 0 ? (
+          transactions.map((t: Transaction) => {
+            const status = getTransactionStatus(new Date(t.date));
+            const amount = formatAmount(t.amount);
+
             const isDebit = t.type === 'debit';
             const isCredit = t.type === 'credit';
-  
+
             return (
               <TableRow key={t.id} className={`${isDebit || amount[0] === '-' ? 'bg-[#fffbfa]' : 'bg-[#F6FEF9]'} !over:bg-none !border-b-DEFAULT`}>
                 <TableCell className="max-w-[250px] pl-2 pr-10">
@@ -106,7 +107,7 @@ import {
                     </h1>
                   </div>
                 </TableCell>
-  
+
                 <TableCell className={`pl-2 pr-10 font-semibold ${
                   isDebit || amount[0] === '-' ?
                     'text-[#f04438]'
@@ -114,28 +115,37 @@ import {
                 }`}>
                   {isDebit ? `-${amount}` : isCredit ? amount : amount}
                 </TableCell>
-  
+
                 <TableCell className="pl-2 pr-10">
-                  <CategoryBadge category={status} /> 
+                  <CategoryBadge category={status} />
                 </TableCell>
-  
+
                 <TableCell className="min-w-32 pl-2 pr-10">
                   {formatDateTime(new Date(t.date)).dateTime}
                 </TableCell>
-  
+
                 <TableCell className="pl-2 pr-10 capitalize min-w-24">
                  {t.paymentChannel}
                 </TableCell>
-  
+
                 <TableCell className="pl-2 pr-10 max-md:hidden">
                  <CategoryBadge category={t.category} /> 
                 </TableCell>
               </TableRow>
-            )
-          })}
-        </TableBody>
-      </Table>
-    )
-  }
+            );
+          })
+          ) : (
+            <TableRow>
+              <TableCell colSpan={6} className="text-center">
+                No transactions available.
+              </TableCell>
+            </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      );
+};
+    
+  
   
   export default TransactionsTable

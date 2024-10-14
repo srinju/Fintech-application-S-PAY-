@@ -22,11 +22,11 @@ async function Home({searchParams : {id,page}} : SearchParamProps)  {
 
     const accountsData = accounts?.data;
     const bankId = id || accountsData[0].id;
-    console.log("bank Id from the home page" , bankId);
+    //console.log("bank Id from the home page" , bankId);
     const account = await getAccount({bankId})
 
-    console.log("account data " , accountsData);
-    console.log("account " , account);
+    //console.log("account data " , accountsData);
+    //console.log("account " , account);
     
     const loggedIn = session?.user?  {
         firstName :session.user.firstName || 'Guest' ,

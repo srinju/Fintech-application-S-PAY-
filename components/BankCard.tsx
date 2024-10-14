@@ -1,13 +1,14 @@
 import Image from "next/image"
 import Link from "next/link"
+import Copy from "./Copy"
 
 
-export const BankCard = ({account,userName,showBalance}: CreditCardProps) => {
+export const BankCard = ({account,userName , showBalance  = true}: CreditCardProps) => {
 
 
     return (
-        <div>
-            <Link href="/asdasda">
+        <div className="flex flex-col">
+            <Link href={`/transaction-history/?id=${account.bankId}`} className="bank-card min-w-[325px]">
                 <div className="w-50 h-56 m-auto bg-red-100 rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-110 border-black-2">
                 
                 <img 
@@ -70,7 +71,9 @@ export const BankCard = ({account,userName,showBalance}: CreditCardProps) => {
                     </div>
                 </div>
             </Link>
+            <div className="mt-5">
+            {showBalance && <Copy  title={account?.shareableId}/>}
+            </div>
         </div>
-        
     )
 }
