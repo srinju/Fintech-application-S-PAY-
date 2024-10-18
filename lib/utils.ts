@@ -149,3 +149,7 @@ export const formatDateTime = (dateString: Date) => {
 export const removeSpecialCharacters = (value: string) => {
   return value.replace(/[^\w\s]/gi, "");
 };
+
+export function decryptId(id: string) {
+  return atob(id);
+}

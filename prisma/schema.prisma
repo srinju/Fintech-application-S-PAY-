@@ -39,3 +39,15 @@ model BankAccount {
   @@unique([userId, accountId])
   @@index([userId])
 }
+
+model Transactions {
+  email String @unique
+  name String 
+  amount String
+  channel String
+  category String
+  senderId String
+  receiverId String
+  senderBankId String
+  receiverBankId String
+}

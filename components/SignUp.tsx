@@ -5,8 +5,11 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import PlaidLink from './PlaidLink';
+import { getServerSession } from 'next-auth';
+import { NEXT_AUTH } from '@/lib/auth';
 
-export default function Signup() {
+export default async  function Signup() {
+  const session = await getServerSession(NEXT_AUTH);
   const [user, setUser] = useState(null);
   const router = useRouter();
   const [formData, setFormData] = useState({

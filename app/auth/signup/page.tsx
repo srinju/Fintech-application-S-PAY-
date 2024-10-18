@@ -7,6 +7,9 @@ import React from 'react'
 
 async function signup()  {
 
+  const session = await getServerSession(NEXT_AUTH);
+  if(!session) return null;
+
   return <div>
     <Signup />
   </div>

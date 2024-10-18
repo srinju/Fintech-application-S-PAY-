@@ -72,7 +72,7 @@ export const BankCard = ({account,userName , showBalance  = true}: CreditCardPro
                 </div>
             </Link>
             <div className="mt-5">
-            {showBalance && <Copy  title={account?.shareableId}/>}
+                {showBalance && <Copy  title={account?.shareableId}/>}
             </div>
         </div>
     )

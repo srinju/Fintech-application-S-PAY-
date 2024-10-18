@@ -172,18 +172,40 @@ export const  getBanks = async ({userId} : getBanksProps) => {
 
 //get specific bank from bankcollection with the bankID>
 export const getBank = async ({ // function to get additional bank details
-    bankId,userId 
-} : {bankId : string , userId : string}) => {
+    bankId 
+} : {bankId : string}) => {
     
     try {
         console.log("document id from the useractions file " , bankId)
         const bank = await primsa.bankAccount.findUnique({
             where : {
-                userId : userId,
-                accountId : bankId
+                //userId : userId,
+                accountId : bankId //maybe the accountId should be bankID(idk)
             }
         });
-        console.log("bank from the user actions file that is fetching from the database" , bank);
+        console.log("bank from the user actions file that is fetching from the database(getBank funtion)" , bank);
+        return bank;
+    } catch (error) {
+        console.log("error fetching bank account!!" , error);
+    }
+}
+
+//getting bankaccount by bank account id >>>
+export const getBankByAccountId = async ({
+    accountId
+} : getBankByAccountIdProps) => { // function to get additional bank details
+    
+    try {
+        console.log("document id from the useractions file " , accountId)
+        const bank = await primsa.bankAccount.findUnique({
+            where : {
+                
+                accountId : accountId
+            }
+        });
+
+        if(!bank) return null; //should be bank.total == 1 then return null
+        
         return bank;
     } catch (error) {
         console.log("error fetching bank account!!" , error);
