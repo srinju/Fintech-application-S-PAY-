@@ -20,11 +20,21 @@ async function Home({searchParams : {id,page}} : SearchParamProps)  {
 
     if(!accounts) return;
 
-    const accountsData = accounts?.data;
-    const bankId = id || accountsData[0].id;
+    const accountsData = accounts.data;
+    const bankId = id || (accountsData[0] && accountsData[0].bankId);
+    let transactions: any[] = [];
     //console.log("bank Id from the home page" , bankId);
-    const account = await getAccount({bankId})
+    //const account = bankId ? await getAccount({ bankId }) : null;
 
+    if (bankId) {
+        const accountResult = await getAccount({ bankId });
+        
+        if (typeof accountResult === 'object' && accountResult !== null) {
+            transactions = accountResult.transactions || [];
+        } else {
+            console.error("Failed to fetch account:", accountResult);
+        }
+    }
     //console.log("account data " , accountsData);
     //console.log("account " , account);
     
@@ -54,14 +64,14 @@ async function Home({searchParams : {id,page}} : SearchParamProps)  {
                     />
                 </header>
                 <RecentTransactions accounts={accountsData}
-                    transactions = {account?.transactions}
+                    transactions = {accounts?.transactions}
                     bankId={bankId}
                     page = {currentPage}
                 />
             </div>
             <RightSideBar
                 user = {loggedIn}
-                transactions={account?.transactions}
+                transactions={accounts?.transactions}
                 banks = {accountsData?.slice(0,2)}
             />
         </section>

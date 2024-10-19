@@ -68,6 +68,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
         destinationFundingSourceUrl: receiverBank?.fundingSourceUrl,
         amount: data.amount,
       };
+
       // create transfer
       const transfer = await createTransfer(transferParams);
 
