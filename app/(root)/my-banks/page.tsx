@@ -41,13 +41,17 @@ const MyBanks = async () => {
                     Your cards
                 </h2>
                 <div className="flex flex-wrap gap-6">
-                    {accounts && accounts.data.map((a: Account) => (
-                    <BankCard 
-                        key={accounts.id}
+                        {accounts && accounts.data && accounts.data.length > 0 ? (
+                        accounts.data.map((a: Account) => (
+                        <BankCard 
+                        key={a.id}
                         account={a}
                         userName={loggedIn?.firstName}
-                    />
-                    ))}
+                        />
+                    ))
+                    ) : (
+                    <p>No bank accounts found. Add a new account to get started.</p>
+                    )}
                 </div>
                 </div>
             </div>

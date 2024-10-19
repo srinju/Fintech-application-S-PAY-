@@ -97,7 +97,10 @@ export const getAccount = async ({ bankId }: getAccountProps) => {
     const bank = await getBank({ bankId });
     console.log("fetched bank (in the get account func og the bank actions file) ", bank);
 
-    if(!bank) return null;
+    if(!bank) {
+      console.log("bank not found");
+      return null;
+    };
 
     // fetching accountinfo from plaid using access token >
     const accountsResponse = await plaidClient.accountsGet({
@@ -155,7 +158,7 @@ export const getAccount = async ({ bankId }: getAccountProps) => {
     };
 
     // sort transactions by date such that the most recent transaction is first
-    const allTransactions = [...transactions, ...transferTransactions || []].sort(
+    const allTransactions = [...(transactions || []), ...(transferTransactions || [])].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
@@ -165,6 +168,7 @@ export const getAccount = async ({ bankId }: getAccountProps) => {
     }
   } catch (error) {
     console.error("An error occurred in the getACCOunt function :", error);
+    return null;
   }
 };
 
@@ -198,11 +202,14 @@ export const getTransactions = async ({
     while (hasMore) {
       const response = await plaidClient.transactionsSync({
         access_token: accessToken,
+        options : {
+          include_personal_finance_category : true
+        },
       });
 
       const data = response.data;
 
-      /*
+      
       transactions = response.data.added.map((transaction) => ({
         id: transaction.transaction_id,
         name: transaction.name,
@@ -215,8 +222,9 @@ export const getTransactions = async ({
         date: transaction.date,
         image: transaction.logo_url,
       }));
-      */
+      
 
+      /*
       transactions = transactions.concat(
         data.added.map((transaction) => ({
           id: transaction.transaction_id,
@@ -229,6 +237,7 @@ export const getTransactions = async ({
           date: transaction.date,
         }))
       );
+      */
 
       hasMore = data.has_more;
     }
@@ -236,6 +245,7 @@ export const getTransactions = async ({
     return transactions || [];
   } catch (error) {
     console.error("an error occured in the get transactions function :", error);
+    return []; //returning empty array instead of undefined 
   }
 };
 
