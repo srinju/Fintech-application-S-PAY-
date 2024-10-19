@@ -112,7 +112,12 @@ export const getAccount = async ({ bankId }: getAccountProps) => {
       return null;
     }
 
-    const accountData = accountsResponse.data.accounts[0];
+    const accountData = accountsResponse.data?.accounts?.[0];
+
+    if(!accountData) {
+      console.error("No accounts found for the given bank!!!!");
+      return null;
+    }
 
     // get transfer transactions from appwrite
     const transferTransactionsData = await getTransactionsByBankId({
@@ -209,7 +214,19 @@ export const getTransactions = async ({
 
       const data = response.data;
 
-      
+      transactions = [...transactions, ...response.data.added.map((transaction) => ({
+        id: transaction.transaction_id,
+        name: transaction.name,
+        paymentChannel: transaction.payment_channel,
+        accountId: transaction.account_id,
+        amount: transaction.amount,
+        pending: transaction.pending,
+        category: transaction.category ? transaction.category[0] : "",
+        date: transaction.date,
+        image: transaction.logo_url,
+    }))];
+
+      /*
       transactions = response.data.added.map((transaction) => ({
         id: transaction.transaction_id,
         name: transaction.name,
@@ -222,6 +239,7 @@ export const getTransactions = async ({
         date: transaction.date,
         image: transaction.logo_url,
       }));
+      */
       
 
       /*
@@ -239,7 +257,7 @@ export const getTransactions = async ({
       );
       */
 
-      hasMore = data.has_more;
+      hasMore = response.data.has_more;
     }
 
     return transactions || [];

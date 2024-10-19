@@ -7,6 +7,9 @@ import { PrismaClient } from "@prisma/client";
 const prisma  = new PrismaClient();
 
 export const createTransaction = async (transaction : CreateTransactionProps) => {
+    if(!transaction.amount || !transaction.senderBankId || !transaction.receiverBankId){
+        throw new Error("Missing required transaction fields!!");
+    }
     try {
         const newTransaction = await prisma.transactions.create({
             data : {
@@ -36,8 +39,8 @@ export const getTransactionsByBankId = async ( {bankId} : getTransactionsByBankI
         const transactions = {
             total : senderTransactions.length + receiverTransactions.length,
             documents : [
-                ...senderTransactions,
-                ...receiverTransactions
+                ...(senderTransactions || []),
+                ...(receiverTransactions || [])
             ],
         };
         return transactions;
