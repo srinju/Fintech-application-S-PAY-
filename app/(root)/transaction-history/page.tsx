@@ -90,4 +90,3 @@ const TransactionHistory = async ({searchParams : {id,page}} : SearchParamProps)
 }
 
 export default TransactionHistory
-

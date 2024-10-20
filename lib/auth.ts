@@ -29,7 +29,7 @@ export const NEXT_AUTH: NextAuthOptions = {
                     const existingUser = await prisma.user.findFirst({
                         where: { email: validatedCredentials.email }
                     });
-
+                    
                     if (!existingUser) {
                         return null; // User not found
                     }
