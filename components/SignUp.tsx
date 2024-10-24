@@ -8,8 +8,8 @@ import PlaidLink from './PlaidLink';
 import { getServerSession } from 'next-auth';
 import { NEXT_AUTH } from '@/lib/auth';
 
-export default async  function Signup() {
-  const session = await getServerSession(NEXT_AUTH);
+export default  function Signup() {
+  
   const [user, setUser] = useState(null);
   const router = useRouter();
   const [formData, setFormData] = useState({
